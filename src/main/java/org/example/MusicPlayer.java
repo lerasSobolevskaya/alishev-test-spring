@@ -1,20 +1,22 @@
 package org.example;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class MusicPlayer {
 
-    private Music music1;
-    private Music music2;
+    private List<Music> list = new ArrayList<>();
+
     @Value("${musicPlayer.name}")
     private String name;
     @Value("${musicPlayer.volume}")
     private int volume;
 
-    public MusicPlayer(@Qualifier("classicalMusic") Music music1,@Qualifier("rockMusic") Music music2) {
-        this.music1 = music1;
-        this.music2 = music2;
+    public MusicPlayer(List<Music> list) {
+        this.list = list;
     }
 
     public String getName() {
@@ -33,7 +35,9 @@ public class MusicPlayer {
         this.volume = volume;
     }
 
-    public void playMusic() {
-        System.out.println("Playing: " + music1.getSong() + ", " + music2.getSong());
+    public String playMusic() {
+        Random random = new Random();
+        int musicListSize = random.nextInt(list.size());
+        return "Playing: " + list.get(musicListSize).getSong();
     }
 }
